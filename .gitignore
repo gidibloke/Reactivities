@@ -3,4 +3,6 @@ obj
 .vscode
 appsettings.json
 *.db
-
+.vs
+*.db-shm
+*.db-wal
