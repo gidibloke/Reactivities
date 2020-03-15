@@ -1,30 +1,24 @@
-import React, { useContext } from 'react'
-import { Grid} from 'semantic-ui-react'
-import ActivityList from './activitylist'
-import ActivityDetails from '../details/ActivityDetails'
-import { ActivityForm } from '../form/ActivityForm'
-import { observer } from 'mobx-react-lite'
-import ActivityStore from '../../../app/stores/activityStore';
+import React, { useContext, useEffect } from 'react';
+import { Grid} from 'semantic-ui-react';
+import ActivityList from './activitylist';
+import { observer } from 'mobx-react-lite';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import ActivityStore from '../../../app/stores/activityStore'
 
 const ActivityDashboard: React.FC = () => {
-	const activityStore = useContext(ActivityStore);
-	const {editMode, selectedActivity} = activityStore;
+	const activityStore = useContext(ActivityStore)
+
+    useEffect(() => {
+        activityStore.loadActivities();
+    }, [activityStore]);
+    if(activityStore.loadingInitial) return <LoadingComponent content='Loading Activities...'/>
 	return (
 		<Grid>
 			<Grid.Column width={10}>
 				<ActivityList/>
 			</Grid.Column>
 			<Grid.Column width={6}>
-				{selectedActivity  && !editMode && (
-				<ActivityDetails />
-				)}
-				{editMode && 
-				<ActivityForm
-				key={(selectedActivity && selectedActivity.id) || 0}
-				activity = {selectedActivity!}
-				 />}
-				
-				
+				<h1>Activity Filter</h1>				
 			</Grid.Column>
 		</Grid>
 	)
