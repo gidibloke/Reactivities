@@ -14,6 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistence;
+using Application;
+using FluentValidation.AspNetCore;
+using API.Middleware;
 
 namespace API
 {
@@ -29,7 +32,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            
             services.AddDbContext<DataContext>(opt =>{
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -39,14 +42,20 @@ namespace API
                 });
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddControllers().AddFluentValidation(cfg => {
+                cfg.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+
             }
 
             // app.UseHttpsRedirection();

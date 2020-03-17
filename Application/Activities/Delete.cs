@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using Application.Errors;
+using MediatR;
 using Persistence;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Application.Activities
 {
@@ -24,19 +26,15 @@ namespace Application.Activities
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities.FindAsync(request.Id);
-                if(request == null)
+                if(activity == null)
                 {
-                    throw new Exception("Could not find activity");
+                    throw new RestException(HttpStatusCode.NotFound, new {activity = "Not Found"});
                 }
                 _context.Remove(activity);
                 var success = await _context.SaveChangesAsync() > 0;
                 if (success) return Unit.Value;
                 throw new Exception("Problem deleting entry");
-
-
-                throw new NotImplementedException();
             }
         }
-
     }
 }

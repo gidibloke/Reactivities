@@ -39,16 +39,11 @@ export class ActivityStore{
             })
             this.loadingInitial = false;
             })
-            console.log(this.groupActivitiesByDate(activities));
-
-
-        }catch(error){
-            console.log(error);
+        }catch(error){            
             runInAction('load activities error', () =>{
                 this.loadingInitial = true;
             })
-            
-
+            console.log(error);
         }
     };
 
@@ -68,12 +63,11 @@ export class ActivityStore{
 
 
             }
-            catch (error) {
-                console.log(error);
+            catch (error) {                
                 runInAction('get Activity error', () =>{
                     this.loadingInitial = false;
                 })
-
+                console.log(error);
             }
             
         }
