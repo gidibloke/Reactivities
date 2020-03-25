@@ -48,9 +48,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                             <Route path='/login' component={LoginForm} />
                             <Route path='/register' component={RegisterForm} />
                             <Route component={NotFound}/>
-                            
                         </Switch>
-
                     </Container> 
                 </Fragment>
             )}/>
