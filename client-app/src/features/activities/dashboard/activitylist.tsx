@@ -23,9 +23,6 @@ const ActivityList: React.FC = () => {
                 </Fragment>
             ))}
         </Fragment>
-        
-
     )
-
 }
 export default observer (ActivityList);

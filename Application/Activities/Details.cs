@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Net;
 using Application.Errors;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Activities
 {
