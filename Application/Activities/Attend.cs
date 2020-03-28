@@ -39,7 +39,7 @@ namespace Application.Activities
                     new {Activity = "Could not find activity"});
                 
                 var user = await _context.Users.SingleOrDefaultAsync(x =>
-                    x.UserName == _userAccessor.CurrentUsername());
+                    x.UserName == _userAccessor.GetCurrentUsername());
 
                 var attendance = await _context.UserActivities
                     .SingleOrDefaultAsync(x => x.ActivityId == activity.Id && 

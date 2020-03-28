@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using System.Linq;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -27,13 +28,13 @@ namespace Application.User
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 // handler logic goes here
-                var user = await _userManager.FindByNameAsync(_userAccessor.CurrentUsername());
+                var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUsername());
                 return new User
                 {
                     DisplayName = user.DisplayName,
                     Username = user.UserName,
                     Token = _jwtGenerator.CreateToken(user),
-                    Image = null
+                    Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
                 };
             }
         }
