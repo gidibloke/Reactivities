@@ -11,12 +11,12 @@ using FluentValidation.AspNetCore;
 using API.Middleware;
 using Domain;
 using Microsoft.AspNetCore.Identity;
-using Application.Interfaces;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
+using Infrastructure.IoC;
 using Infrastructure.Photos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -66,15 +66,9 @@ namespace API
                 {
                     policy.Requirements.Add(new IsHostRequirements());
                 }));
-            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
-            
-            
-            
-            
-
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt => 
+                .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -84,9 +78,8 @@ namespace API
                         ValidateIssuer = false
                     };
                 });
-            services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IUserAccessor, UserAccessor>();
-            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.ServicesCollection();
+
             // ReSharper disable once StringLiteralTypo
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
         }

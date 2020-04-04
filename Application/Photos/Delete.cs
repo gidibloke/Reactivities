@@ -43,8 +43,6 @@ namespace Application.Photos
                 
                 if(photo.IsMain)
                     throw new RestException(HttpStatusCode.BadRequest, new {Photo = "You cannot delete your main photo"});
-                
-                
                 var result = _photoAccessor.DeletePhoto(photo.Id);
                 
                 if(result == null)
