@@ -38,7 +38,9 @@ export default class UserStore {
             history.push('/activities');
         }
         catch (error) {
+            console.log(error);
             throw error;
+            
         }
     }
 

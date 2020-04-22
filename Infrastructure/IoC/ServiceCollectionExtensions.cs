@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Profiles;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,7 @@ namespace Infrastructure.IoC
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.AddScoped<IProfileReader, ProfileReader>();
             return services;
         }
     }

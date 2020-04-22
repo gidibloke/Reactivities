@@ -31,11 +31,11 @@ export default class ActivityStore{
             })
             .configureLogging(LogLevel.Information).build();
         
-        this.hubConnection.start().then(() => console.log(this.hubConnection!.state)).then(() => {
-            console.log('Attempting to join group');
-            this.hubConnection!.invoke('AddToGroup', activityId);
-        })
+        this.hubConnection
+            .start()
+            .then(() => console.log(this.hubConnection!.state))
             .catch(error => console.log('Error establishing connection :', error));
+            
         
         this.hubConnection.on('ReceiveComment', comment => {
             runInAction(() =>{
@@ -43,20 +43,9 @@ export default class ActivityStore{
             })
             
         })
-        
-        this.hubConnection.on('Send', message => {
-            toast.info(message);
-        })
-    };
-    
+    };    
     @action stopHubConnection = () => {
-        this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
-            .then(() => {
-                this.hubConnection!.stop();
-            }).then(() => console.log('This connection has stopped'))
-            .catch(err => console.log(err));
-        
-        
+        this.hubConnection!.stop();       
     }
     
     @action addComment = async (values: any) => {
